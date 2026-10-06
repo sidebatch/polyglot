@@ -80,6 +80,68 @@
     window.scrollTo({top:0, behavior:'smooth'});
   }
 
+  // ---------- 보기 모드 (탭 / 그리드) ----------
+  var viewMode = 'tabs';
+  try { viewMode = localStorage.getItem('polyglot-view') || 'tabs'; } catch(e){}
+  if (viewMode !== 'grid') viewMode = 'tabs';
+
+  var tabbarEl = document.querySelector('.tabbar');
+  var plazaEl = document.getElementById('plaza');
+  var plazaGrid = document.getElementById('plazaGrid');
+  var langheadEl = document.getElementById('langhead');
+
+  function entryCount(code){
+    var p = panes[code];
+    return p ? p.querySelectorAll('.entry').length : 0;
+  }
+  function buildPlaza(){
+    plazaGrid.innerHTML = '';
+    POLYGLOT_LANGS.slice().sort(function(a,b){ return entryCount(b.code) - entryCount(a.code); })
+    .forEach(function(L){
+      var n = entryCount(L.code);
+      var has = n > 0;
+      var c = document.createElement('button');
+      c.className = 'plaza-card' + (has ? '' : ' dim');
+      c.style.setProperty('--ac', L.accent);
+      var img = document.createElement('img');
+      img.className = 'flag'; img.src = L.flag; img.alt = '';
+      var nm = document.createElement('div'); nm.className = 'nm'; nm.textContent = langName(L.code);
+      var st = document.createElement('div');
+      st.className = 'st ' + (has ? 'has' : 'soon');
+      if (has) st.style.color = L.accent;
+      st.textContent = has ? t('card_mats').replace('{n}', n) : t('card_soon');
+      c.appendChild(img); c.appendChild(nm); c.appendChild(st);
+      c.addEventListener('click', function(){ openLangGrid(L.code); });
+      plazaGrid.appendChild(c);
+    });
+  }
+  function openLangGrid(code){
+    activate(code);
+    plazaEl.hidden = true;
+    mainEl.hidden = false;
+    langheadEl.hidden = false;
+    document.getElementById('langheadFlag').src = langDef(code).flag;
+    document.getElementById('langheadName').textContent = langName(code);
+    window.scrollTo({top:0});
+  }
+  function backToPlaza(){
+    langheadEl.hidden = true;
+    mainEl.hidden = true;
+    plazaEl.hidden = false;
+    window.scrollTo({top:0});
+  }
+  function renderView(){
+    var isGrid = viewMode === 'grid';
+    tabbarEl.style.display = isGrid ? 'none' : '';
+    if (isGrid) { backToPlaza(); }
+    else {
+      plazaEl.hidden = true; langheadEl.hidden = true; mainEl.hidden = false;
+      activate(current);
+    }
+    renderSettingsMenu();
+  }
+  document.getElementById('langBack').addEventListener('click', backToPlaza);
+
   // ---------- UI 문구 적용 ----------
   function renderUiText(){
     document.querySelectorAll('[data-i18n]').forEach(function(el){
@@ -100,6 +162,11 @@
       }
     });
     renderUiMenu();
+    buildPlaza();
+    if (!langheadEl.hidden) {
+      document.getElementById('langheadName').textContent = langName(current);
+    }
+    renderSettingsMenu();
   }
 
   // ---------- UI 언어 메뉴 ----------
@@ -131,11 +198,49 @@
     var willOpen = uiMenu.hidden;
     uiMenu.hidden = !willOpen;
     uiBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    if (willOpen) closeSettings();
   });
   document.addEventListener('click', function(e){
     if (!uiMenu.hidden && !e.target.closest('.ui-lang-wrap')) closeMenu();
+    if (!setMenu.hidden && !e.target.closest('.settings-wrap')) closeSettings();
   });
-  document.addEventListener('keydown', function(e){ if (e.key==='Escape') closeMenu(); });
+  document.addEventListener('keydown', function(e){
+    if (e.key==='Escape'){ closeMenu(); closeSettings(); }
+  });
+
+  // ---------- 설정 메뉴 (보기 모드) ----------
+  var setBtn = document.getElementById('settingsBtn');
+  var setMenu = document.getElementById('settingsMenu');
+  var viewOpts = document.getElementById('viewOpts');
+  function renderSettingsMenu(){
+    viewOpts.innerHTML = '';
+    [['tabs', t('view_tabs')], ['grid', t('view_grid')]].forEach(function(pair){
+      var b = document.createElement('button');
+      b.className = 'view-opt';
+      var label = document.createElement('span'); label.textContent = pair[1];
+      var chk = document.createElement('span'); chk.className = 'chk';
+      chk.textContent = pair[0]===viewMode ? '✓' : '';
+      b.appendChild(label); b.appendChild(chk);
+      b.addEventListener('click', function(){
+        viewMode = pair[0];
+        try { localStorage.setItem('polyglot-view', viewMode); } catch(e){}
+        closeSettings();
+        renderView();
+      });
+      viewOpts.appendChild(b);
+    });
+  }
+  function closeSettings(){
+    setMenu.hidden = true;
+    setBtn.setAttribute('aria-expanded','false');
+  }
+  setBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var willOpen = setMenu.hidden;
+    setMenu.hidden = !willOpen;
+    setBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    if (willOpen) closeMenu();
+  });
 
   // ---------- 맨 위로 ----------
   var topbtn = document.getElementById('topbtn');
@@ -176,5 +281,5 @@
   }
 
   renderUiText();
-  activate(current);
+  renderView();
 })();
