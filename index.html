@@ -24,10 +24,20 @@
     background:linear-gradient(160deg,#262019 0%,#3a2f22 60%,#4a3a28 100%);
     color:#f5eddc; padding:34px 20px 26px; position:relative; overflow:hidden;
   }
-  header.hero::after{
-    content:"文"; position:absolute; right:10px; top:-24px; font-size:150px; opacity:.07;
-    font-family:serif; pointer-events:none;
+  header.hero::after{content:none;}
+  .hello-wall{
+    position:absolute; inset:0; overflow:hidden; pointer-events:none;
+    display:flex; flex-wrap:wrap; align-content:center; justify-content:center;
+    gap:4px 16px; padding:18px 12px; opacity:.15;
+    -webkit-mask-image:radial-gradient(ellipse at center,#000 25%,transparent 78%);
+    mask-image:radial-gradient(ellipse at center,#000 25%,transparent 78%);
   }
+  .hello-wall span{color:#f5eddc; font-family:Georgia,"Noto Serif KR",serif; white-space:nowrap; line-height:1.3;}
+  .hello-wall span:nth-child(3n){font-size:14px; transform:rotate(-4deg);}
+  .hello-wall span:nth-child(3n+1){font-size:21px; transform:rotate(3deg);}
+  .hello-wall span:nth-child(3n+2){font-size:17px; transform:rotate(-2deg);}
+  .hello-wall span:nth-child(5n){font-size:25px;}
+  .hero-inner{position:relative; z-index:1;}
   .hero h1{margin:0; font-size:26px; letter-spacing:.5px; font-family:Georgia,"Noto Serif KR",serif;}
   .hero h1 .g{color:#e8c476;}
   .hero p{margin:8px 0 0; font-size:13.5px; color:#cbbfa8;}
@@ -127,8 +137,13 @@
 <body>
 
 <header class="hero">
+  <div class="hello-wall" aria-hidden="true">
+    <span>Hello</span><span>안녕하세요</span><span>こんにちは</span><span>你好</span><span>Bonjour</span><span>Hola</span><span>Ciao</span><span>Olá</span><span>Hallo</span><span>Привет</span><span>مرحبا</span><span>नमस्ते</span><span>สวัสดี</span><span>Xin chào</span><span>Merhaba</span><span>Γεια σας</span><span>שלום</span><span>سلام</span><span>Cześć</span><span>Ahoj</span><span>Bună</span><span>Szia</span><span>Здраво</span><span>Jambo</span><span>Sawubona</span><span>ሰላም</span><span>Aloha</span><span>Kia ora</span><span>Kamusta</span><span>Talofa</span><span>Saluton</span><span>Salve</span><span>გამარჯობა</span><span>Բարեւ</span><span>வணக்கம்</span><span>নমস্কার</span><span>မင်္ဂလာပါ</span><span>សួស្តី</span><span>Bok</span>
+  </div>
+  <div class="hero-inner">
   <h1>Poly<span class="g">glot</span></h1>
   <p>대화·사진·노트에서 모은 문법을 언어별로 정리한 레퍼런스</p>
+  </div>
 </header>
 
 <nav class="tabs" role="tablist">
