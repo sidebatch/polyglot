@@ -23,6 +23,10 @@ self.addEventListener('activate', function (e) {
 
 self.addEventListener('fetch', function (e) {
   if (e.request.method !== 'GET') return;
+  // 버전 폴링(version.txt)은 항상 네트워크에서 — SW 캐시를 타면 새 버전을 못 감지함
+  try {
+    if (new URL(e.request.url).pathname.endsWith('/version.txt')) return;
+  } catch (err) {}
   e.respondWith(
     caches.match(e.request, { ignoreSearch: true }).then(function (hit) {
       if (hit) return hit;

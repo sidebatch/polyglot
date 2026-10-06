@@ -1,5 +1,5 @@
 // Polyglot service worker — 앱 셸 오프라인 캐시
-var CACHE = 'polyglot-f05ea49';
+var CACHE = 'polyglot-111c76d';
 var ASSETS = ['./', './index.html', './manifest.webmanifest',
   './icons/flags/jp.png', './icons/flags/gb.png', './icons/flags/fr.png', './icons/flags/ru.png',
   './icons/flags/es.png', './icons/flags/de.png', './icons/flags/cn.png', './icons/flags/sa.png'];
@@ -23,6 +23,10 @@ self.addEventListener('activate', function (e) {
 
 self.addEventListener('fetch', function (e) {
   if (e.request.method !== 'GET') return;
+  // 버전 폴링(version.txt)은 항상 네트워크에서 — SW 캐시를 타면 새 버전을 못 감지함
+  try {
+    if (new URL(e.request.url).pathname.endsWith('/version.txt')) return;
+  } catch (err) {}
   e.respondWith(
     caches.match(e.request, { ignoreSearch: true }).then(function (hit) {
       if (hit) return hit;

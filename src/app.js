@@ -1,4 +1,5 @@
 (function(){
+  var APP_VERSION = '__APP_VERSION__'; // build.mjs가 커밋 해시로 치환 — 버전 폴링용
   // ---------- UI 언어 ----------
   var uiLang = 'ko';
   try { uiLang = localStorage.getItem('polyglot-ui') || 'ko'; } catch(e){}
@@ -265,19 +266,46 @@
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function(){
       navigator.serviceWorker.register('sw.js', {updateViaCache:'none'}).catch(function(){});
+      setTimeout(checkAppVersion, 3000);
     });
     if (navigator.serviceWorker.controller) {
       navigator.serviceWorker.addEventListener('controllerchange', function(){
         window.location.reload();
       });
     }
-    // 백그라운드에서 돌아올 때도 업데이트 확인 (이어보기에서는 내비게이션이 없어 체크가 안 돌 수 있음)
+    // 백그라운드에서 돌아오거나 주기적으로 서버 버전을 확인 (이어보기에서는 내비게이션이 없어 체크가 안 돌 수 있음)
     document.addEventListener('visibilitychange', function(){
       if (document.visibilityState !== 'visible') return;
+      checkAppVersion();
+    });
+    setInterval(checkAppVersion, 5*60*1000);
+  }
+
+  // ---------- 버전 폴링: 서버에 새 빌드가 있으면 SW 교체 후 새로고침 ----------
+  // (브라우저의 SW 업데이트 체크 타이밍에만 의존하지 않기 위함)
+  var updateTriggered = false;
+  function checkAppVersion(){
+    fetch('version.txt', {cache:'no-store'}).then(function(r){
+      if (!r.ok) throw 0;
+      return r.text();
+    }).then(function(v){
+      v = (v || '').trim();
+      if (!v || v === APP_VERSION) return;
+      try { if (sessionStorage.getItem('pg-upd') === v) return; } catch(e){}
+      try { sessionStorage.setItem('pg-upd', v); } catch(e){}
+      triggerUpdate();
+    }).catch(function(){});
+  }
+  function triggerUpdate(){
+    if (updateTriggered) return;
+    updateTriggered = true;
+    // 새 SW가 들어오면 위 controllerchange에서 자동 새로고침됨. 8초 안에 안 되면 강제 새로고침.
+    setTimeout(function(){ window.location.reload(); }, 8000);
+    if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistration().then(function(reg){
         if (reg) reg.update().catch(function(){});
-      });
-    });
+      }).catch(function(){});
+    }
   }
 
   renderUiText();

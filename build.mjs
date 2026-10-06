@@ -7,7 +7,15 @@ import { execSync } from 'node:child_process';
 
 mkdirSync('docs', { recursive: true });
 
-var jsFiles = ['src/i18n.js', 'src/app.js'];
+var ver = 'v1';
+try { ver = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim(); } catch (e) {}
+writeFileSync('docs/version.txt', ver);
+
+// app.js에 빌드 버전 주입 (업데이트 폴링용)
+var appSrc = readFileSync('src/app.js', 'utf8').replace('__APP_VERSION__', ver);
+writeFileSync('/tmp/pg_app_src.js', appSrc);
+
+var jsFiles = ['src/i18n.js', '/tmp/pg_app_src.js'];
 var jsMin = jsFiles.map(function(f, i){
   var out = '/tmp/pg_s' + i + '.min.js';
   execSync('npx -y esbuild ' + f + ' --minify --outfile=' + out, { stdio: 'inherit' });
@@ -39,7 +47,5 @@ console.log('built docs/index.html — ' + html.length + ' bytes');
 cpSync('src/manifest.webmanifest', 'docs/manifest.webmanifest');
 cpSync('src/icons', 'docs/icons', { recursive: true });
 var sw = readFileSync('src/sw.js', 'utf8');
-var ver = 'v1';
-try { ver = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim(); } catch (e) {}
 writeFileSync('docs/sw.js', sw.replace('__VERSION__', ver));
 console.log('copied manifest, icons, sw.js (' + ver + ')');
