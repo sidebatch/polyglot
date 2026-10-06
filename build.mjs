@@ -41,7 +41,7 @@ html = html.replace(
 html = html.replace(/<!--[\s\S]*?-->/g, '');
 html = html.replace(/>\s+</g, '><');
 html = html.split('\n').map((l) => l.trim()).filter((l) => l.length).join('\n');
-html = html.replace(/__VER__/g, 'v' + verNum);
+html = html.replace(/__VER__/g, verNum);
 
 writeFileSync('docs/index.html', html);
 console.log('built docs/index.html — ' + html.length + ' bytes');
