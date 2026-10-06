@@ -93,6 +93,27 @@
   }
   .soon .big{font-size:44px; margin-bottom:12px;}
   .soon p{font-size:14.5px;}
+  .entry-list{display:flex; flex-direction:column; gap:12px;}
+  .entry-card{
+    text-align:left; background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:18px; cursor:pointer; font-family:inherit; width:100%; color:var(--ink);
+    box-shadow:0 2px 8px rgba(80,60,30,.06); transition:transform .15s ease;
+  }
+  .entry-card:active{transform:scale(.98);}
+  .entry-title{font-size:17px; font-weight:800; margin-bottom:6px;}
+  .entry-meta{font-size:13px; color:var(--accent); font-weight:700; margin-bottom:4px;}
+  .entry-desc{font-size:13px; color:var(--ink-soft);}
+  .backbtn{
+    border:1px solid var(--line); background:var(--card); border-radius:999px;
+    padding:8px 16px; font-size:14px; font-weight:700; color:var(--ink-soft);
+    cursor:pointer; margin-bottom:12px; font-family:inherit;
+  }
+  .credit{
+    background:var(--paper2); border:1px solid var(--line); border-radius:10px;
+    padding:10px 14px; font-size:13.5px; color:var(--ink-soft); margin-bottom:12px; overflow:hidden;
+  }
+  .credit b{color:var(--ink);}
+  .credit .date{float:right; font-size:12px;}
   footer{max-width:720px; margin:0 auto; padding:0 16px 40px; color:var(--ink-soft); font-size:12.5px; text-align:center;}
   footer .copy{font-size:11px; opacity:.75;}
   #topbtn{
@@ -119,6 +140,17 @@
 <main>
   <!-- ============ 일본어 ============ -->
   <div class="pane active" id="pane-ja">
+    <div class="entry-list" id="ja-list">
+      <!-- 새 자료 추가: entry-card 한 장 + 아래 entry-detail 블록 한 개 복사 -->
+      <button class="entry-card" data-target="entry-ja-1">
+        <div class="entry-title">일본어 기초 문법 노트</div>
+        <div class="entry-meta">📎 자료 제공 · 카린</div>
+        <div class="entry-desc">동사 て형 · 형용사(い/な) · 〜たい/〜たくない · 2026.10.06</div>
+      </button>
+    </div>
+    <div class="entry-detail" id="entry-ja-1" hidden>
+      <button class="backbtn" data-back>← 일본어 목록</button>
+      <div class="credit">📎 자료 제공 · <b>카린</b><span class="date">2026.10.06</span></div>
     <div class="chips">
       <a href="#ja-te">동사 て형</a>
       <a href="#ja-adj">형용사</a>
@@ -202,6 +234,7 @@
         <span style="font-size:14px"><span class="jp"><ruby>行<rt>い</rt></ruby>き<b>たくない</b></span> (가기 싫다) ·
         <span class="jp"><ruby>食<rt>た</rt></ruby>べ<b>たくない</b></span> (먹기 싫다)</span></div>
     </section>
+    </div><!-- /entry-detail -->
   </div>
 
   <!-- ============ 영어 ============ -->
@@ -234,7 +267,11 @@
   var panes={ja:document.getElementById("pane-ja"),en:document.getElementById("pane-en"),fr:document.getElementById("pane-fr")};
   function activate(lang){
     tabs.forEach(function(b){b.classList.toggle("active",b.dataset.lang===lang);});
-    Object.keys(panes).forEach(function(k){panes[k].classList.toggle("active",k===lang);});
+    Object.keys(panes).forEach(function(k){
+      panes[k].classList.toggle("active",k===lang);
+      var list=panes[k].querySelector(".entry-list"), detail=panes[k].querySelector(".entry-detail");
+      if(list&&detail){list.hidden=false; detail.hidden=true;}
+    });
     document.documentElement.style.setProperty("--accent",ACCENT[lang]);
     window.scrollTo({top:0,behavior:"smooth"});
   }
@@ -242,6 +279,22 @@
   var topbtn=document.getElementById("topbtn");
   window.addEventListener("scroll",function(){topbtn.style.display=window.scrollY>400?"block":"none";},{passive:true});
   topbtn.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"});});
+  document.querySelectorAll(".entry-card").forEach(function(card){
+    card.addEventListener("click",function(){
+      var pane=card.closest(".pane");
+      pane.querySelector(".entry-list").hidden=true;
+      document.getElementById(card.dataset.target).hidden=false;
+      window.scrollTo({top:0});
+    });
+  });
+  document.querySelectorAll("[data-back]").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      var detail=btn.closest(".entry-detail");
+      detail.hidden=true;
+      detail.closest(".pane").querySelector(".entry-list").hidden=false;
+      window.scrollTo({top:0});
+    });
+  });
 })();
 </script>
 </body>
