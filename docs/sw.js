@@ -1,5 +1,5 @@
 // Polyglot service worker — 앱 셸 오프라인 캐시
-var CACHE = 'polyglot-111c76d';
+var CACHE = 'polyglot-d7a7b0f';
 var ASSETS = ['./', './index.html', './manifest.webmanifest',
   './icons/flags/jp.png', './icons/flags/gb.png', './icons/flags/fr.png', './icons/flags/ru.png',
   './icons/flags/es.png', './icons/flags/de.png', './icons/flags/cn.png', './icons/flags/sa.png'];

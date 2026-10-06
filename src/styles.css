@@ -69,6 +69,7 @@
   }
   .view-opt:hover{background:var(--paper2);}
   .view-opt .chk{color:var(--accent); font-weight:800; min-width:18px; text-align:right;}
+  .settings-ver{text-align:center; font-size:11px; color:var(--ink-soft); opacity:.7; padding:6px 0 2px; border-top:1px solid var(--line); margin-top:4px;}
   .ui-lang-btn{
     border:1px solid rgba(255,255,255,.25); background:rgba(0,0,0,.35); color:#f5eddc;
     border-radius:999px; padding:7px 13px; font-size:13px; font-weight:700; cursor:pointer;

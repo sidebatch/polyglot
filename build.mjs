@@ -10,6 +10,8 @@ mkdirSync('docs', { recursive: true });
 var ver = 'v1';
 try { ver = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim(); } catch (e) {}
 writeFileSync('docs/version.txt', ver);
+var verNum = '1';
+try { verNum = execSync('git rev-list --count HEAD', { encoding: 'utf8' }).trim(); } catch (e) {}
 
 // app.js에 빌드 버전 주입 (업데이트 폴링용)
 var appSrc = readFileSync('src/app.js', 'utf8').replace('__APP_VERSION__', ver);
@@ -39,6 +41,7 @@ html = html.replace(
 html = html.replace(/<!--[\s\S]*?-->/g, '');
 html = html.replace(/>\s+</g, '><');
 html = html.split('\n').map((l) => l.trim()).filter((l) => l.length).join('\n');
+html = html.replace(/__VER__/g, 'v' + verNum);
 
 writeFileSync('docs/index.html', html);
 console.log('built docs/index.html — ' + html.length + ' bytes');
