@@ -28,6 +28,7 @@
   .hello-wall span:nth-child(3n+2){font-size:17px; transform:rotate(-2deg);}
   .hello-wall span:nth-child(5n){font-size:25px;}
   .hero-inner{position:relative; z-index:1; text-shadow:0 2px 14px rgba(0,0,0,.55);}
+  .from-line{font-size:13px; color:#e8c476; letter-spacing:1.5px; margin:4px 0 10px; font-weight:600;}
   .hero h1{margin:0; font-size:26px; letter-spacing:.5px; font-family:Georgia,"Noto Serif KR",serif;}
   .hero h1 .g{color:#e8c476;}
   .hero p{margin:8px 0 0; font-size:13.5px; color:#cbbfa8;}
