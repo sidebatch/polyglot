@@ -1,5 +1,5 @@
 // Polyglot service worker — 앱 셸 오프라인 캐시
-var CACHE = 'polyglot-8f81c8d';
+var CACHE = 'polyglot-b4dadd4';
 var ASSETS = ['./', './index.html', './manifest.webmanifest'];
 
 self.addEventListener('install', function (e) {
