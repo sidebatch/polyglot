@@ -28,7 +28,13 @@
   });
   if('serviceWorker' in navigator){
     window.addEventListener('load',function(){
-      navigator.serviceWorker.register('sw.js').catch(function(){});
+      navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).catch(function(){});
     });
+    // 업데이트된 서비스워커가 제어권을 가져오면 자동으로 새로고침 (구버전 화면 고착 방지)
+    if(navigator.serviceWorker.controller){
+      navigator.serviceWorker.addEventListener('controllerchange',function(){
+        window.location.reload();
+      });
+    }
   }
 })();
