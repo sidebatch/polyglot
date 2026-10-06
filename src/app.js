@@ -165,6 +165,13 @@
         window.location.reload();
       });
     }
+    // 백그라운드에서 돌아올 때도 업데이트 확인 (이어보기에서는 내비게이션이 없어 체크가 안 돌 수 있음)
+    document.addEventListener('visibilitychange', function(){
+      if (document.visibilityState !== 'visible') return;
+      navigator.serviceWorker.getRegistration().then(function(reg){
+        if (reg) reg.update().catch(function(){});
+      });
+    });
   }
 
   renderUiText();
