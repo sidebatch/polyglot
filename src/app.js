@@ -270,29 +270,16 @@
     });
   });
 
-  // ---------- PWA + 자동 업데이트 ----------
-  var updateTriggered = false;
-  var hadController = false;
-  try { hadController = !!navigator.serviceWorker.controller; } catch(e){}
+  // ---------- PWA ----------
+  // 네트워크 우선 전략(Still과 동일): 온라인이면 항상 최신 셸을 가져오므로
+  // 일반 새로고침만으로 업데이트가 반영됨. 오프라인이면 캐시로 폴백.
   if ('serviceWorker' in navigator) {
-    // 첫 설치가 아닐 때만 SW 교체 후 새로고침 (첫 설치 직후 1회 리로드는 방지)
-    navigator.serviceWorker.addEventListener('controllerchange', function(){
-      if (hadController || updateTriggered) window.location.reload();
-      hadController = true;
-    });
     window.addEventListener('load', function(){
       navigator.serviceWorker.register('sw.js', {updateViaCache:'none'}).catch(function(){});
-      setTimeout(function(){ checkAppVersion(false); }, 3000);
     });
-    // 백그라운드에서 돌아오거나 주기적으로 서버 버전을 확인
-    document.addEventListener('visibilitychange', function(){
-      if (document.visibilityState !== 'visible') return;
-      checkAppVersion(false);
-    });
-    setInterval(function(){ checkAppVersion(false); }, 5*60*1000);
   }
 
-  // ---------- 버전 폴링: 서버에 새 빌드가 있으면 SW 교체 후 새로고침 ----------
+  // ---------- 수동 업데이트 확인 ----------
   var updateStatusKey = null;
   function setUpdateStatus(key){
     updateStatusKey = key;
@@ -302,85 +289,22 @@
     el.textContent = t(key);
     el.hidden = false;
   }
-  // 구 SW(우회 로직이 없던 버전)의 런타임 캐시에 박힌 version.txt를 먼저 제거.
-  // 제거하지 않으면 폴링이 매번 묵은 버전을 읽어 새 버전을 영원히 못 감지함.
-  function purgeVersionCache(){
-    try {
-      if (!('caches' in window)) return Promise.resolve();
-      return caches.keys().then(function(keys){
-        return Promise.all(keys.map(function(k){
-          return caches.open(k).then(function(c){
-            return c.keys().then(function(reqs){
-              return Promise.all(reqs.map(function(r){
-                return r.url.indexOf('/version.txt') !== -1 ? c.delete(r) : null;
-              }));
-            });
-          });
-        }));
-      });
-    } catch(e){ return Promise.resolve(); }
-  }
-  function checkAppVersion(manual){
-    purgeVersionCache().then(function(){
-      return fetch('version.txt', {cache:'no-store'});
-    }).then(function(r){
+  function checkAppVersion(){
+    fetch('version.txt', {cache:'no-store'}).then(function(r){
       if (!r.ok) throw 0;
       return r.text();
     }).then(function(v){
       v = (v || '').trim();
-      if (!v || v === APP_VERSION) {
-        if (manual) setUpdateStatus('update_latest');
-        return;
-      }
-      if (manual) setUpdateStatus('update_applying');
-      applyUpdate(v, manual);
-    }).catch(function(){
-      if (manual) setUpdateStatus(null);
-    });
-  }
-  function applyUpdate(v, manual){
-    var already = false;
-    try { already = sessionStorage.getItem('pg-upd') === v; } catch(e){}
-    if (already && !manual) return;
-    try { sessionStorage.setItem('pg-upd', v); } catch(e){}
-    updateTriggered = true;
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistration().then(function(reg){
-        if (reg) reg.update().catch(function(){});
-      }).catch(function(){});
-    }
-    setTimeout(function(){
-      // controllerchange에서 이미 새로고침됐으면 이 코드는 실행 안 됨
-      if (manual) forceFresh();
-      else window.location.reload();
-    }, 8000);
-  }
-  // 확실한 갈아엎기: 캐시+SW 등록을 제거 후 새로고침 (localStorage 설정은 유지됨).
-  // 수동 "업데이트 확인"의 마지막 수단. 쿠키 지우기와 같은 효과.
-  function forceFresh(){
-    var p = Promise.resolve();
-    try {
-      if ('caches' in window) {
-        p = caches.keys().then(function(keys){
-          return Promise.all(keys.map(function(k){ return caches.delete(k); }));
-        });
-      }
-    } catch(e){}
-    p.then(function(){
-      if ('serviceWorker' in navigator) return navigator.serviceWorker.getRegistration();
-    }).then(function(reg){
-      if (reg) return reg.unregister();
-    }).then(function(){
-      window.location.reload();
-    }).catch(function(){
-      window.location.reload();
-    });
+      if (!v || v === APP_VERSION) { setUpdateStatus('update_latest'); return; }
+      setUpdateStatus('update_applying');
+      setTimeout(function(){ window.location.reload(); }, 800);
+    }).catch(function(){ setUpdateStatus(null); });
   }
   var updateBtn = document.getElementById('updateBtn');
   if (updateBtn) updateBtn.addEventListener('click', function(e){
     e.stopPropagation();
     setUpdateStatus(null);
-    checkAppVersion(true);
+    checkAppVersion();
   });
 
   renderUiText();
