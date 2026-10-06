@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Polyglot — 언어별 레퍼런스</title>
-<meta name="description" content="대화·사진·노트에서 모은 언어별 레퍼런스. 일본어/영어/프랑스어.">
+<meta name="description" content="대화·사진·노트에서 모은 언어별 레퍼런스. 일본어/영어/프랑스어/러시아어/스페인어/독일어/중국어/아랍어.">
 <meta name="theme-color" content="#262019">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -22,15 +22,17 @@
   <div class="hero-inner">
   <h1>Poly<span class="g">glot</span></h1>
   <div class="from-line">from 밍Lab</div>
-  <p>대화·사진·노트에서 모은 언어별 레퍼런스</p>
+  <p data-i18n="hero_sub">대화·사진·노트에서 모은 언어별 레퍼런스</p>
   </div>
 </header>
 
-<nav class="tabs" role="tablist">
-  <button data-lang="ja" class="active" role="tab"><span class="flag">🇯🇵</span>일본어</button>
-  <button data-lang="en" role="tab"><span class="flag">🇬🇧</span>영어</button>
-  <button data-lang="fr" role="tab"><span class="flag">🇫🇷</span>프랑스어</button>
-</nav>
+<div class="tabbar">
+<nav class="tabs" id="tabs" role="tablist"></nav>
+<div class="ui-lang-wrap">
+  <button id="uiLangBtn" class="ui-lang-btn" aria-haspopup="listbox" aria-expanded="false">🌐 <span id="uiLangName">한국어</span></button>
+  <div id="uiLangMenu" class="ui-lang-menu" hidden role="listbox"></div>
+</div>
+</div>
 
 <main>
   <!-- ============ 일본어 ============ -->
@@ -132,30 +134,14 @@
       </div><!-- /entry -->
     </div><!-- /entry-list -->
   </div>
-
-  <!-- ============ 영어 ============ -->
-  <div class="pane" id="pane-en">
-    <div class="soon">
-      <div class="big">📝</div>
-      <h2 style="font-family:Georgia,serif; color:var(--ink);">영어 노트 준비 중</h2>
-      <p>정리할 영어 문법 노트가 생기면<br>이 탭에 같은 형식으로 추가됩니다.</p>
-    </div>
-  </div>
-
-  <!-- ============ 프랑스어 ============ -->
-  <div class="pane" id="pane-fr">
-    <div class="soon">
-      <div class="big">📝</div>
-      <h2 style="font-family:Georgia,serif; color:var(--ink);">프랑스어 노트 준비 중</h2>
-      <p>정리할 프랑스어 문법 노트가 생기면<br>이 탭에 같은 형식으로 추가됩니다.</p>
-    </div>
-  </div>
+  <!-- 다른 언어의 "준비 중" 패널은 app.js가 자동 생성 -->
 </main>
 
-<button id="topbtn" aria-label="맨 위로">↑</button>
+<button id="topbtn" data-i18n-aria="topbtn" aria-label="맨 위로">↑</button>
 
-<footer>Polyglot · 언어별 레퍼런스<br><span class="copy">© 2026 sidebatch. All rights reserved.</span></footer>
+<footer><span data-i18n="footer_tag">Polyglot · 언어별 레퍼런스</span><br><span class="copy">© 2026 sidebatch. All rights reserved.</span></footer>
 
+<script src="i18n.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

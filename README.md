@@ -14,9 +14,10 @@
 
 ```
 src/           소스 (직접 수정하는 곳)
-  index.html   마크업 + 콘텐츠
+  index.html   마크업 (탭·패널은 JS가 생성)
   styles.css   스타일
-  app.js       탭/아코디언 로직
+  i18n.js      콘텐츠 언어 8개 + UI 번역 9개 (ko/ja/en/fr/ru/es/de/zh/ar)
+  app.js       탭/아코디언/UI언어 로직
 docs/          빌드 결과물 (배포본, Pages가 여기서 서빙)
 build.mjs      빌드 스크립트 (esbuild로 압축 후 docs/index.html 생성)
 ```

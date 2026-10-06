@@ -7,11 +7,15 @@ import { execSync } from 'node:child_process';
 
 mkdirSync('docs', { recursive: true });
 
-execSync('npx -y esbuild src/app.js --minify --outfile=/tmp/pg_app.min.js', { stdio: 'inherit' });
+var jsFiles = ['src/i18n.js', 'src/app.js'];
+var jsMin = jsFiles.map(function(f, i){
+  var out = '/tmp/pg_s' + i + '.min.js';
+  execSync('npx -y esbuild ' + f + ' --minify --outfile=' + out, { stdio: 'inherit' });
+  return readFileSync(out, 'utf8').trim();
+}).join('\n');
 execSync('npx -y esbuild src/styles.css --minify --outfile=/tmp/pg_styles.min.css', { stdio: 'inherit' });
 
 let html = readFileSync('src/index.html', 'utf8');
-const js = readFileSync('/tmp/pg_app.min.js', 'utf8').trim();
 const css = readFileSync('/tmp/pg_styles.min.css', 'utf8').trim();
 
 html = html.replace(
@@ -19,8 +23,8 @@ html = html.replace(
   '<style>' + css + '</style>'
 );
 html = html.replace(
-  '<script src="app.js"></script>',
-  '<script>' + js + '</script>'
+  /<script src="i18n\.js"><\/script>\s*<script src="app\.js"><\/script>/,
+  '<script>' + jsMin + '</script>'
 );
 
 // 보수적 HTML 압축: 주석 제거, 태그 사이 공백 제거, 빈 줄 제거
