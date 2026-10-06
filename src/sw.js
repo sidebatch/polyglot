@@ -1,6 +1,8 @@
 // Polyglot service worker — 앱 셸 오프라인 캐시
 var CACHE = 'polyglot-__VERSION__';
-var ASSETS = ['./', './index.html', './manifest.webmanifest'];
+var ASSETS = ['./', './index.html', './manifest.webmanifest',
+  './icons/flags/jp.png', './icons/flags/gb.png', './icons/flags/fr.png', './icons/flags/ru.png',
+  './icons/flags/es.png', './icons/flags/de.png', './icons/flags/cn.png', './icons/flags/sa.png'];
 
 self.addEventListener('install', function (e) {
   e.waitUntil(

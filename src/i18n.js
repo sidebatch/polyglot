@@ -2,21 +2,21 @@
    자료(콘텐츠) 자체는 건드리지 않고, 껍데기(UI 문구)만 번역한다.
    UI 언어 추가 = UI_LANGS·UI_LANG_NAMES·UI_STRINGS에 한 줄씩 추가. */
 var POLYGLOT_LANGS = [
-  {code:'ja', flag:'🇯🇵', accent:'#b3402e', hasContent:true,
+  {code:'ja', flag:'icons/flags/jp.png', accent:'#b3402e', hasContent:true,
    names:{ko:'일본어',ja:'日本語',en:'Japanese',fr:'Japonais',ru:'Японский',es:'Japonés',de:'Japanisch',zh:'日语',ar:'اليابانية'}},
-  {code:'en', flag:'🇬🇧', accent:'#274b73',
+  {code:'en', flag:'icons/flags/gb.png', accent:'#274b73',
    names:{ko:'영어',ja:'英語',en:'English',fr:'Anglais',ru:'Английский',es:'Inglés',de:'Englisch',zh:'英语',ar:'الإنجليزية'}},
-  {code:'fr', flag:'🇫🇷', accent:'#3a5fb0',
+  {code:'fr', flag:'icons/flags/fr.png', accent:'#3a5fb0',
    names:{ko:'프랑스어',ja:'フランス語',en:'French',fr:'Français',ru:'Французский',es:'Francés',de:'Französisch',zh:'法语',ar:'الفرنسية'}},
-  {code:'ru', flag:'🇷🇺', accent:'#6e4a7e', hasContent:true,
+  {code:'ru', flag:'icons/flags/ru.png', accent:'#6e4a7e', hasContent:true,
    names:{ko:'러시아어',ja:'ロシア語',en:'Russian',fr:'Russe',ru:'Русский',es:'Ruso',de:'Russisch',zh:'俄语',ar:'الروسية'}},
-  {code:'es', flag:'🇪🇸', accent:'#c2701e',
+  {code:'es', flag:'icons/flags/es.png', accent:'#c2701e',
    names:{ko:'스페인어',ja:'スペイン語',en:'Spanish',fr:'Espagnol',ru:'Испанский',es:'Español',de:'Spanisch',zh:'西班牙语',ar:'الإسبانية'}},
-  {code:'de', flag:'🇩🇪', accent:'#4d4d4d',
+  {code:'de', flag:'icons/flags/de.png', accent:'#4d4d4d',
    names:{ko:'독일어',ja:'ドイツ語',en:'German',fr:'Allemand',ru:'Немецкий',es:'Alemán',de:'Deutsch',zh:'德语',ar:'الألمانية'}},
-  {code:'zh', flag:'🇨🇳', accent:'#c9a227',
+  {code:'zh', flag:'icons/flags/cn.png', accent:'#c9a227',
    names:{ko:'중국어',ja:'中国語',en:'Chinese',fr:'Chinois',ru:'Китайский',es:'Chino',de:'Chinesisch',zh:'中文',ar:'الصينية'}},
-  {code:'ar', flag:'🇸🇦', accent:'#1e7a5a',
+  {code:'ar', flag:'icons/flags/sa.png', accent:'#1e7a5a',
    names:{ko:'아랍어',ja:'アラビア語',en:'Arabic',fr:'Arabe',ru:'Арабский',es:'Árabe',de:'Arabisch',zh:'阿拉伯语',ar:'العربية'}}
 ];
 

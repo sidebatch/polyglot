@@ -1,0 +1,131 @@
+<style>
+.plz{box-sizing:border-box;font-family:-apple-system,'Noto Sans KR','Apple SD Gothic Neo',sans-serif;max-width:560px;margin:0 auto;color:var(--hatch-widget-text);}
+.plz *{box-sizing:border-box;}
+.plz .mockpill{display:inline-block;font-size:11px;font-weight:800;letter-spacing:1px;background:var(--hatch-widget-surface-muted);color:var(--hatch-widget-muted);border:1px solid var(--hatch-widget-border);padding:4px 12px;border-radius:999px;margin:4px 0 10px;}
+.plz .hero{background:linear-gradient(160deg,#262019 0%,#3a2f22 60%,#4a3a28 100%);color:#f5eddc;border-radius:16px;padding:26px 20px 20px;text-align:center;}
+.plz .hero h1{font-family:Georgia,'Noto Serif KR',serif;font-size:28px;margin:0;}
+.plz .hero h1 .g{color:#c9a227;}
+.plz .hero .from{font-size:11.5px;opacity:.75;margin:4px 0 6px;}
+.plz .hero p{font-size:12.5px;opacity:.85;margin:0;}
+.plz .sec{padding:16px 4px 8px;}
+.plz .sec h2{font-size:15px;margin:0 0 2px;}
+.plz .sec .sub{font-size:12px;color:var(--hatch-widget-muted);margin:0 0 12px;}
+.plz .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.plz .lcard{background:var(--hatch-widget-surface);border:1px solid var(--hatch-widget-border);border-top:4px solid var(--ac,#bbb);border-radius:14px;padding:14px 12px;text-align:left;cursor:pointer;font-family:inherit;color:var(--hatch-widget-text);box-shadow:var(--hatch-widget-shadow,0 1px 4px rgba(0,0,0,.06));}
+.plz .lcard:active{transform:scale(.97);}
+.plz .lcard .flagimg{width:38px;height:auto;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.18);display:block;}
+.plz .langhead .flagimg{width:30px;height:auto;border-radius:5px;}
+.plz .soonbox .flagimg{width:52px;height:auto;border-radius:8px;margin:0 auto 10px;display:block;}
+.plz .lcard .nm{font-size:15px;font-weight:800;margin:8px 0 3px;}
+.plz .lcard .st{font-size:11.5px;font-weight:700;}
+.plz .lcard .st.has{color:var(--ac);}
+.plz .lcard .st.soon{color:var(--hatch-widget-muted);font-weight:400;}
+.plz .lcard.dim{opacity:.62;}
+.plz .hint{text-align:center;font-size:11.5px;color:var(--hatch-widget-muted);margin:12px 0 4px;}
+.plz .langhead{display:flex;align-items:center;gap:10px;padding:6px 0 12px;}
+.plz .back{border:1px solid var(--hatch-widget-border);background:var(--hatch-widget-surface);color:var(--hatch-widget-text);border-radius:999px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;}
+.plz .langhead .t{font-size:17px;font-weight:800;}
+.plz .langhead .flag{font-size:22px;}
+.plz .entry{background:var(--hatch-widget-surface);border:1px solid var(--hatch-widget-border);border-radius:14px;margin-bottom:10px;overflow:hidden;}
+.plz .entry button{width:100%;text-align:left;background:none;border:0;padding:16px;font-family:inherit;color:var(--hatch-widget-text);cursor:pointer;}
+.plz .entry .et{font-size:15px;font-weight:800;margin-bottom:4px;}
+.plz .entry .ed{font-size:12px;color:var(--hatch-widget-muted);}
+.plz .sample{border-top:1px dashed var(--hatch-widget-border);padding:10px 16px 14px;font-size:13.5px;}
+.plz .sample table{width:100%;border-collapse:collapse;}
+.plz .sample td{padding:7px 4px;border-bottom:1px solid var(--hatch-widget-border);}
+.plz .sample td:last-child{color:var(--hatch-widget-muted);font-size:12px;text-align:right;}
+.plz .credit{text-align:center;font-size:11px;color:var(--hatch-widget-muted);padding:10px 0 4px;}
+.plz .soonbox{text-align:center;padding:44px 16px;color:var(--hatch-widget-muted);}
+.plz .soonbox .big{font-size:40px;margin-bottom:10px;}
+.plz .soonbox p{font-size:13px;margin:0;}
+</style>
+<div class="plz" id="plz">
+  <span class="mockpill">컨셉 목업 · 눌러보세요</span>
+  <div id="plz-view"></div>
+</div>
+<script>
+(function(){
+  var LANGS=[
+    {code:'ja',iso:'jp',name:'일본어',accent:'#b3402e',mats:1},
+    {code:'ru',iso:'ru',name:'러시아어',accent:'#6e4a7e',mats:1},
+    {code:'en',iso:'gb',name:'영어',accent:'#274b73',mats:0},
+    {code:'fr',iso:'fr',name:'프랑스어',accent:'#3a5fb0',mats:0},
+    {code:'es',iso:'es',name:'스페인어',accent:'#c2701e',mats:0},
+    {code:'de',iso:'de',name:'독일어',accent:'#4d4d4d',mats:0},
+    {code:'zh',iso:'cn',name:'중국어',accent:'#c9a227',mats:0},
+    {code:'ar',iso:'sa',name:'아랍어',accent:'#1e7a5a',mats:0}
+  ];
+  function flagImg(L,cls){return '<img class="'+cls+'" src="https://flagcdn.com/w80/'+L.iso+'.png" alt="'+L.name+' 국기">';}
+  var ENTRIES={
+    ja:[{title:'일본어 기초 문법 노트',desc:'동사 て형 · 형용사(い/な) · 〜たい/〜たくない',
+      rows:[['書く → 書いて','쓴다 → 쓰고'],['食べる → 食べて','먹다 → 먹고'],['行く → 行って','가다 → 가고 (예외)']],
+      credit:'\uD83D\uDCCE 자료 제공 · 카린 · 2026.10.06'}],
+    ru:[{title:'러시아어 동사 현재형',desc:'1식/2식 동사 · 인칭별 어미',
+      rows:[['я понимаЮ','나'],['ты понимаЕШЬ','너'],['они понимаЮТ','그들']],
+      credit:'\uD83D\uDCCE 자료 제공 · 밍밍 · 2026.10.06'}]
+  };
+  function esc(s){return s;}
+  function getState(){return window.hatchWidget.getState({view:'grid',code:null,open:null});}
+  function setState(s){window.hatchWidget.setState(s);render();}
+  function langOf(code){for(var i=0;i<LANGS.length;i++)if(LANGS[i].code===code)return LANGS[i];return null;}
+
+  function renderGrid(){
+    var h='<div class="hero"><h1>Poly<span class="g">glot</span></h1><div class="from">from 밍Lab</div><p>대화·사진·노트에서 모은 언어별 레퍼런스</p></div>';
+    h+='<div class="sec"><div class="grid">';
+    LANGS.forEach(function(L){
+      var has=L.mats>0;
+      h+='<button class="lcard'+(has?'':' dim')+'" style="--ac:'+L.accent+'" data-code="'+L.code+'">'
+        +flagImg(L,'flagimg')
+        +'<div class="nm">'+L.name+'</div>'
+        +'<div class="st '+(has?'has':'soon')+'">'+(has?('자료 '+L.mats+'개'):'준비 중')+'</div></button>';
+    });
+    h+='</div></div>';
+    return h;
+  }
+
+  function renderLang(code,openIdx){
+    var L=langOf(code);
+    var h='<div class="langhead"><button class="back" id="plz-back">‹ 모든 언어</button>'
+      +flagImg(L,'flagimg')+'<span class="t">'+L.name+'</span></div>';
+    var es=ENTRIES[code];
+    if(!es){
+      h+='<div class="soonbox">'+flagImg(L,'flagimg')+'<p>'+L.name+' 노트 준비 중<br>정리된 노트가 생기면 이 화면에 추가됩니다.</p></div>';
+      return h;
+    }
+    es.forEach(function(e,i){
+      var open=(openIdx===i);
+      h+='<div class="entry"><button data-ei="'+i+'"><div class="et">'+e.title+'</div><div class="ed">'+e.desc+(open?' ▲':' ▼')+'</div></button>';
+      if(open){
+        h+='<div class="sample"><table>';
+        e.rows.forEach(function(r){h+='<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>';});
+        h+='</table></div><div class="credit">'+e.credit+'</div>';
+      }
+      h+='</div>';
+    });
+    return h;
+  }
+
+  function render(){
+    var s=getState();
+    var v=document.getElementById('plz-view');
+    v.innerHTML = s.view==='grid' ? renderGrid() : renderLang(s.code,s.open);
+    if(s.view==='grid'){
+      v.querySelectorAll('.lcard').forEach(function(c){
+        c.addEventListener('click',function(){setState({view:'lang',code:c.getAttribute('data-code'),open:null});});
+      });
+    }else{
+      var b=document.getElementById('plz-back');
+      if(b)b.addEventListener('click',function(){setState({view:'grid',code:null,open:null});});
+      v.querySelectorAll('.entry button').forEach(function(btn){
+        btn.addEventListener('click',function(){
+          var i=parseInt(btn.getAttribute('data-ei'),10);
+          var cur=getState();
+          setState({view:'lang',code:cur.code,open:(cur.open===i?null:i)});
+        });
+      });
+    }
+  }
+  window.addEventListener('hatch-widget-state',function(e){render();});
+  render();
+})();
+</script>

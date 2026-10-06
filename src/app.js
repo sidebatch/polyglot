@@ -26,9 +26,10 @@
     var b = document.createElement('button');
     b.setAttribute('role','tab');
     b.dataset.lang = L.code;
-    var flag = document.createElement('span');
+    var flag = document.createElement('img');
     flag.className = 'flag';
-    flag.textContent = L.flag;
+    flag.src = L.flag;
+    flag.alt = '';
     var nm = document.createElement('span');
     nm.className = 'tname';
     b.appendChild(flag);
