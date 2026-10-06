@@ -14,7 +14,7 @@
   }
   header.hero{
     background:linear-gradient(160deg,#262019 0%,#3a2f22 60%,#4a3a28 100%);
-    color:#f5eddc; padding:34px 20px 26px; position:relative; overflow:hidden;
+    color:#f5eddc; padding:34px 20px 26px; position:relative;
   }
   header.hero::after{content:none;}
   .hello-wall{
@@ -47,11 +47,12 @@
     transition:all .18s ease; white-space:nowrap; font-family:inherit;
   }
   nav.tabs button .flag{margin-right:6px;}
-  .ui-lang-wrap{position:relative; flex:0 0 auto;}
+  .ui-lang-wrap{position:absolute; top:12px; right:12px; z-index:5;}
   .ui-lang-btn{
-    border:1px solid var(--line); background:var(--card); color:var(--ink-soft);
-    border-radius:999px; padding:9px 13px; font-size:13.5px; font-weight:700; cursor:pointer;
+    border:1px solid rgba(255,255,255,.25); background:rgba(0,0,0,.35); color:#f5eddc;
+    border-radius:999px; padding:7px 13px; font-size:13px; font-weight:700; cursor:pointer;
     font-family:inherit; white-space:nowrap;
+    -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);
   }
   .ui-lang-menu{
     position:absolute; top:calc(100% + 6px); right:0; min-width:160px; max-height:320px; overflow-y:auto;
