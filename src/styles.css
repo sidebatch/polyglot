@@ -98,6 +98,7 @@
   .mindset-title{font-size:19px; font-weight:800; letter-spacing:-.3px; display:flex; align-items:center; gap:8px; margin-bottom:12px;}
   .mindset-leaf{width:10px; height:10px; border-radius:2px 50% 50% 50%; background:#5b8c5a; transform:rotate(45deg); flex:none;}
   .mindset-card .chev{color:#5b8c5a;}
+  .mindset-card .entry-meta{color:#5b8c5a;}
   .treecard{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:20px; box-shadow:0 4px 18px rgba(43,38,32,.07); margin-top:12px;}
   .tree-diagram{display:flex; align-items:center; margin:14px 0 6px;}
   .meet-tag{display:inline-block; background:#2b2620; color:#f5eddc; font-family:Georgia,serif; font-size:17px; padding:8px 18px; border-radius:999px;}
