@@ -106,18 +106,19 @@
   .entry-list{display:flex; flex-direction:column; gap:12px;}
   .entry-card{
     text-align:left; background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
-    padding:18px; cursor:pointer; font-family:inherit; width:100%; color:var(--ink);
-    box-shadow:0 2px 8px rgba(80,60,30,.06); transition:transform .15s ease;
+    padding:18px 44px 18px 18px; cursor:pointer; font-family:inherit; width:100%; color:var(--ink);
+    box-shadow:0 2px 8px rgba(80,60,30,.06); transition:transform .15s ease; position:relative;
   }
   .entry-card:active{transform:scale(.98);}
+  .entry-card .chev{
+    position:absolute; right:16px; top:50%; transform:translateY(-50%);
+    color:var(--accent); font-size:13px; transition:transform .2s ease;
+  }
+  .entry-card.open .chev{transform:translateY(-50%) rotate(180deg);}
+  .entry-detail{scroll-margin-top:84px;}
   .entry-title{font-size:17px; font-weight:800; margin-bottom:6px;}
   .entry-meta{font-size:13px; color:var(--accent); font-weight:700; margin-bottom:4px;}
   .entry-desc{font-size:13px; color:var(--ink-soft);}
-  .backbtn{
-    border:1px solid var(--line); background:var(--card); border-radius:999px;
-    padding:8px 16px; font-size:14px; font-weight:700; color:var(--ink-soft);
-    cursor:pointer; margin-bottom:12px; font-family:inherit;
-  }
   .credit-bottom{
     text-align:center; font-size:12px; color:var(--ink-soft); opacity:.85;
     padding:16px 0 4px; border-top:1px solid var(--line); margin-top:6px;
@@ -154,14 +155,14 @@
   <!-- ============ 일본어 ============ -->
   <div class="pane active" id="pane-ja">
     <div class="entry-list" id="ja-list">
-      <!-- 새 자료 추가: entry-card 한 장 + 아래 entry-detail 블록 한 개 복사 -->
-      <button class="entry-card" data-target="entry-ja-1">
+      <!-- 새 자료 추가: .entry 블록 통째로 복사 -->
+      <div class="entry">
+      <button class="entry-card" data-entry="entry-ja-1" aria-expanded="false">
         <div class="entry-title">일본어 기초 문법 노트</div>
         <div class="entry-desc">동사 て형 · 형용사(い/な) · 〜たい/〜たくない · 2026.10.06</div>
+        <span class="chev">▼</span>
       </button>
-    </div>
-    <div class="entry-detail" id="entry-ja-1" hidden>
-      <button class="backbtn" data-back>← 일본어 목록</button>
+      <div class="entry-detail" id="entry-ja-1" hidden>
     <div class="chips">
       <a href="#ja-te">동사 て형</a>
       <a href="#ja-adj">형용사</a>
@@ -246,7 +247,9 @@
         <span class="jp"><ruby>食<rt>た</rt></ruby>べ<b>たくない</b></span> (먹기 싫다)</span></div>
     </section>
       <div class="credit-bottom">📎 자료 제공 · 카린 · 2026.10.06</div>
-    </div><!-- /entry-detail -->
+      </div><!-- /entry-detail -->
+      </div><!-- /entry -->
+    </div><!-- /entry-list -->
   </div>
 
   <!-- ============ 영어 ============ -->
@@ -281,8 +284,8 @@
     tabs.forEach(function(b){b.classList.toggle("active",b.dataset.lang===lang);});
     Object.keys(panes).forEach(function(k){
       panes[k].classList.toggle("active",k===lang);
-      var list=panes[k].querySelector(".entry-list"), detail=panes[k].querySelector(".entry-detail");
-      if(list&&detail){list.hidden=false; detail.hidden=true;}
+      panes[k].querySelectorAll(".entry-detail").forEach(function(d){d.hidden=true;});
+      panes[k].querySelectorAll(".entry-card").forEach(function(c){c.classList.remove("open");c.setAttribute("aria-expanded","false");});
     });
     document.documentElement.style.setProperty("--accent",ACCENT[lang]);
     window.scrollTo({top:0,behavior:"smooth"});
@@ -293,18 +296,12 @@
   topbtn.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"});});
   document.querySelectorAll(".entry-card").forEach(function(card){
     card.addEventListener("click",function(){
-      var pane=card.closest(".pane");
-      pane.querySelector(".entry-list").hidden=true;
-      document.getElementById(card.dataset.target).hidden=false;
-      window.scrollTo({top:0});
-    });
-  });
-  document.querySelectorAll("[data-back]").forEach(function(btn){
-    btn.addEventListener("click",function(){
-      var detail=btn.closest(".entry-detail");
-      detail.hidden=true;
-      detail.closest(".pane").querySelector(".entry-list").hidden=false;
-      window.scrollTo({top:0});
+      var detail=document.getElementById(card.dataset.entry);
+      var open=detail.hidden;
+      detail.hidden=!open;
+      card.classList.toggle("open",open);
+      card.setAttribute("aria-expanded",open?"true":"false");
+      if(open){detail.scrollIntoView({behavior:"smooth",block:"start"});}
     });
   });
 })();
