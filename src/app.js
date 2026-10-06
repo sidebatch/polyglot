@@ -17,13 +17,21 @@
     return (L && (L.names[uiLang] || L.names.ko)) || code;
   }
 
-  // ---------- 탭 + 패널 생성 ----------
+  // ---------- 탭 + 패널 생성 (자료 많은 언어 먼저) ----------
   var tabsEl = document.getElementById('tabs');
   var mainEl = document.querySelector('main');
   var panes = {};
   var tabBtns = {};
 
-  POLYGLOT_LANGS.forEach(function(L){
+  function contentCount(code){
+    var p = document.getElementById('pane-'+code);
+    return p ? p.querySelectorAll('.entry').length : 0;
+  }
+  var orderedLangs = POLYGLOT_LANGS.slice().sort(function(a,b){
+    return contentCount(b.code) - contentCount(a.code);
+  });
+
+  orderedLangs.forEach(function(L){
     var b = document.createElement('button');
     b.setAttribute('role','tab');
     b.dataset.lang = L.code;
@@ -60,7 +68,7 @@
     panes[L.code] = pane;
   });
 
-  var current = POLYGLOT_LANGS[0].code;
+  var current = orderedLangs[0].code;
   function activate(lang){
     current = lang;
     POLYGLOT_LANGS.forEach(function(L){
@@ -92,8 +100,7 @@
   var langheadEl = document.getElementById('langhead');
 
   function entryCount(code){
-    var p = panes[code];
-    return p ? p.querySelectorAll('.entry').length : 0;
+    return contentCount(code);
   }
   function buildPlaza(){
     plazaGrid.innerHTML = '';
