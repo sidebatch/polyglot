@@ -8,7 +8,7 @@ var POLYGLOT_LANGS = [
    names:{ko:'영어',ja:'英語',en:'English',fr:'Anglais',ru:'Английский',es:'Inglés',de:'Englisch',zh:'英语',ar:'الإنجليزية'}},
   {code:'fr', flag:'🇫🇷', accent:'#3a5fb0',
    names:{ko:'프랑스어',ja:'フランス語',en:'French',fr:'Français',ru:'Французский',es:'Francés',de:'Französisch',zh:'法语',ar:'الفرنسية'}},
-  {code:'ru', flag:'🇷🇺', accent:'#6e4a7e',
+  {code:'ru', flag:'🇷🇺', accent:'#6e4a7e', hasContent:true,
    names:{ko:'러시아어',ja:'ロシア語',en:'Russian',fr:'Russe',ru:'Русский',es:'Ruso',de:'Russisch',zh:'俄语',ar:'الروسية'}},
   {code:'es', flag:'🇪🇸', accent:'#c2701e',
    names:{ko:'스페인어',ja:'スペイン語',en:'Spanish',fr:'Espagnol',ru:'Испанский',es:'Español',de:'Spanisch',zh:'西班牙语',ar:'الإسبانية'}},
