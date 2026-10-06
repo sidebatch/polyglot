@@ -118,12 +118,10 @@
     padding:8px 16px; font-size:14px; font-weight:700; color:var(--ink-soft);
     cursor:pointer; margin-bottom:12px; font-family:inherit;
   }
-  .credit{
-    background:var(--paper2); border:1px solid var(--line); border-radius:10px;
-    padding:10px 14px; font-size:13.5px; color:var(--ink-soft); margin-bottom:12px; overflow:hidden;
+  .credit-bottom{
+    text-align:center; font-size:12px; color:var(--ink-soft); opacity:.85;
+    padding:16px 0 4px; border-top:1px solid var(--line); margin-top:6px;
   }
-  .credit b{color:var(--ink);}
-  .credit .date{float:right; font-size:12px;}
   footer{max-width:720px; margin:0 auto; padding:0 16px 40px; color:var(--ink-soft); font-size:12.5px; text-align:center;}
   footer .copy{font-size:11px; opacity:.75;}
   #topbtn{
@@ -159,13 +157,11 @@
       <!-- 새 자료 추가: entry-card 한 장 + 아래 entry-detail 블록 한 개 복사 -->
       <button class="entry-card" data-target="entry-ja-1">
         <div class="entry-title">일본어 기초 문법 노트</div>
-        <div class="entry-meta">📎 자료 제공 · 카린</div>
         <div class="entry-desc">동사 て형 · 형용사(い/な) · 〜たい/〜たくない · 2026.10.06</div>
       </button>
     </div>
     <div class="entry-detail" id="entry-ja-1" hidden>
       <button class="backbtn" data-back>← 일본어 목록</button>
-      <div class="credit">📎 자료 제공 · <b>카린</b><span class="date">2026.10.06</span></div>
     <div class="chips">
       <a href="#ja-te">동사 て형</a>
       <a href="#ja-adj">형용사</a>
@@ -249,6 +245,7 @@
         <span style="font-size:14px"><span class="jp"><ruby>行<rt>い</rt></ruby>き<b>たくない</b></span> (가기 싫다) ·
         <span class="jp"><ruby>食<rt>た</rt></ruby>べ<b>たくない</b></span> (먹기 싫다)</span></div>
     </section>
+      <div class="credit-bottom">📎 자료 제공 · 카린 · 2026.10.06</div>
     </div><!-- /entry-detail -->
   </div>
 
