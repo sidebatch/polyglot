@@ -37,6 +37,9 @@ var UI_STRINGS = {
     all_langs: '모든 언어',
     card_mats: '자료 {n}개',
     card_soon: '준비 중',
+    check_update: '업데이트 확인',
+    update_latest: '최신 버전입니다',
+    update_applying: '새 버전 적용 중…',
   },
   ja: {
     hero_sub: '会話・写真・ノートから集めた言語別レファレンス',
@@ -51,6 +54,9 @@ var UI_STRINGS = {
     all_langs: 'すべての言語',
     card_mats: '資料{n}件',
     card_soon: '準備中',
+    check_update: '更新を確認',
+    update_latest: '最新バージョンです',
+    update_applying: '新バージョンを適用中…',
   },
   en: {
     hero_sub: 'A language reference collected from chats, photos, and notes',
@@ -65,6 +71,9 @@ var UI_STRINGS = {
     all_langs: 'All languages',
     card_mats: '{n} notes',
     card_soon: 'Coming soon',
+    check_update: 'Check for updates',
+    update_latest: 'You are up to date',
+    update_applying: 'Applying update…',
   },
   fr: {
     hero_sub: 'Un référentiel de langues issu de conversations, photos et notes',
@@ -79,6 +88,9 @@ var UI_STRINGS = {
     all_langs: 'Toutes les langues',
     card_mats: '{n} notes',
     card_soon: 'Bientôt',
+    check_update: 'Vérifier les mises à jour',
+    update_latest: 'Vous êtes à jour',
+    update_applying: 'Application de la mise à jour…',
   },
   ru: {
     hero_sub: 'Языковой справочник из переписок, фото и заметок',
@@ -93,6 +105,9 @@ var UI_STRINGS = {
     all_langs: 'Все языки',
     card_mats: 'заметки: {n}',
     card_soon: 'Скоро',
+    check_update: 'Проверить обновления',
+    update_latest: 'У вас последняя версия',
+    update_applying: 'Применение обновления…',
   },
   es: {
     hero_sub: 'Una referencia de idiomas recopilada de chats, fotos y notas',
@@ -107,6 +122,9 @@ var UI_STRINGS = {
     all_langs: 'Todos los idiomas',
     card_mats: '{n} notas',
     card_soon: 'Próximamente',
+    check_update: 'Buscar actualizaciones',
+    update_latest: 'Tienes la última versión',
+    update_applying: 'Aplicando actualización…',
   },
   de: {
     hero_sub: 'Eine Sprachenreferenz aus Chats, Fotos und Notizen',
@@ -121,6 +139,9 @@ var UI_STRINGS = {
     all_langs: 'Alle Sprachen',
     card_mats: '{n} Notizen',
     card_soon: 'In Vorbereitung',
+    check_update: 'Nach Updates suchen',
+    update_latest: 'Du bist auf dem neuesten Stand',
+    update_applying: 'Update wird angewendet…',
   },
   zh: {
     hero_sub: '从对话、照片和笔记中收集的语言参考',
@@ -135,6 +156,9 @@ var UI_STRINGS = {
     all_langs: '所有语言',
     card_mats: '资料{n}个',
     card_soon: '准备中',
+    check_update: '检查更新',
+    update_latest: '已是最新版本',
+    update_applying: '正在应用更新…',
   },
   ar: {
     hero_sub: 'مرجع لغات جُمع من المحادثات والصور والملاحظات',
@@ -149,5 +173,8 @@ var UI_STRINGS = {
     all_langs: 'كل اللغات',
     card_mats: '{n} ملاحظات',
     card_soon: 'قريبًا',
+    check_update: 'التحقق من التحديثات',
+    update_latest: 'لديك أحدث إصدار',
+    update_applying: 'جارٍ تطبيق التحديث…',
   }
 };

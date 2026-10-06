@@ -70,6 +70,12 @@
   .view-opt:hover{background:var(--paper2);}
   .view-opt .chk{color:var(--accent); font-weight:800; min-width:18px; text-align:right;}
   .settings-ver{text-align:center; font-size:11px; color:var(--ink-soft); opacity:.7; padding:6px 0 2px; border-top:1px solid var(--line); margin-top:4px;}
+  .update-btn{
+    display:block; width:100%; margin-top:8px; border:1px solid var(--line); background:var(--paper2);
+    border-radius:9px; padding:10px; font-size:13.5px; font-weight:700; color:var(--ink); cursor:pointer; font-family:inherit;
+  }
+  .update-btn:active{transform:scale(.98);}
+  .update-status{font-size:12px; color:var(--ink-soft); text-align:center; padding:8px 4px 2px;}
   .ui-lang-btn{
     border:1px solid rgba(255,255,255,.25); background:rgba(0,0,0,.35); color:#f5eddc;
     border-radius:999px; padding:7px 13px; font-size:13px; font-weight:700; cursor:pointer;

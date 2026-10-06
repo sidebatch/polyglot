@@ -175,6 +175,7 @@
       document.getElementById('langheadName').textContent = langName(current);
     }
     renderSettingsMenu();
+    if (updateStatusKey) setUpdateStatus(updateStatusKey);
   }
 
   // ---------- UI 언어 메뉴 ----------
@@ -269,51 +270,118 @@
     });
   });
 
-  // ---------- PWA ----------
+  // ---------- PWA + 자동 업데이트 ----------
+  var updateTriggered = false;
+  var hadController = false;
+  try { hadController = !!navigator.serviceWorker.controller; } catch(e){}
   if ('serviceWorker' in navigator) {
+    // 첫 설치가 아닐 때만 SW 교체 후 새로고침 (첫 설치 직후 1회 리로드는 방지)
+    navigator.serviceWorker.addEventListener('controllerchange', function(){
+      if (hadController || updateTriggered) window.location.reload();
+      hadController = true;
+    });
     window.addEventListener('load', function(){
       navigator.serviceWorker.register('sw.js', {updateViaCache:'none'}).catch(function(){});
-      setTimeout(checkAppVersion, 3000);
+      setTimeout(function(){ checkAppVersion(false); }, 3000);
     });
-    if (navigator.serviceWorker.controller) {
-      navigator.serviceWorker.addEventListener('controllerchange', function(){
-        window.location.reload();
-      });
-    }
-    // 백그라운드에서 돌아오거나 주기적으로 서버 버전을 확인 (이어보기에서는 내비게이션이 없어 체크가 안 돌 수 있음)
+    // 백그라운드에서 돌아오거나 주기적으로 서버 버전을 확인
     document.addEventListener('visibilitychange', function(){
       if (document.visibilityState !== 'visible') return;
-      checkAppVersion();
+      checkAppVersion(false);
     });
-    setInterval(checkAppVersion, 5*60*1000);
+    setInterval(function(){ checkAppVersion(false); }, 5*60*1000);
   }
 
   // ---------- 버전 폴링: 서버에 새 빌드가 있으면 SW 교체 후 새로고침 ----------
-  // (브라우저의 SW 업데이트 체크 타이밍에만 의존하지 않기 위함)
-  var updateTriggered = false;
-  function checkAppVersion(){
-    fetch('version.txt', {cache:'no-store'}).then(function(r){
+  var updateStatusKey = null;
+  function setUpdateStatus(key){
+    updateStatusKey = key;
+    var el = document.getElementById('updateStatus');
+    if (!el) return;
+    if (!key) { el.hidden = true; return; }
+    el.textContent = t(key);
+    el.hidden = false;
+  }
+  // 구 SW(우회 로직이 없던 버전)의 런타임 캐시에 박힌 version.txt를 먼저 제거.
+  // 제거하지 않으면 폴링이 매번 묵은 버전을 읽어 새 버전을 영원히 못 감지함.
+  function purgeVersionCache(){
+    try {
+      if (!('caches' in window)) return Promise.resolve();
+      return caches.keys().then(function(keys){
+        return Promise.all(keys.map(function(k){
+          return caches.open(k).then(function(c){
+            return c.keys().then(function(reqs){
+              return Promise.all(reqs.map(function(r){
+                return r.url.indexOf('/version.txt') !== -1 ? c.delete(r) : null;
+              }));
+            });
+          });
+        }));
+      });
+    } catch(e){ return Promise.resolve(); }
+  }
+  function checkAppVersion(manual){
+    purgeVersionCache().then(function(){
+      return fetch('version.txt', {cache:'no-store'});
+    }).then(function(r){
       if (!r.ok) throw 0;
       return r.text();
     }).then(function(v){
       v = (v || '').trim();
-      if (!v || v === APP_VERSION) return;
-      try { if (sessionStorage.getItem('pg-upd') === v) return; } catch(e){}
-      try { sessionStorage.setItem('pg-upd', v); } catch(e){}
-      triggerUpdate();
-    }).catch(function(){});
+      if (!v || v === APP_VERSION) {
+        if (manual) setUpdateStatus('update_latest');
+        return;
+      }
+      if (manual) setUpdateStatus('update_applying');
+      applyUpdate(v, manual);
+    }).catch(function(){
+      if (manual) setUpdateStatus(null);
+    });
   }
-  function triggerUpdate(){
-    if (updateTriggered) return;
+  function applyUpdate(v, manual){
+    var already = false;
+    try { already = sessionStorage.getItem('pg-upd') === v; } catch(e){}
+    if (already && !manual) return;
+    try { sessionStorage.setItem('pg-upd', v); } catch(e){}
     updateTriggered = true;
-    // 새 SW가 들어오면 위 controllerchange에서 자동 새로고침됨. 8초 안에 안 되면 강제 새로고침.
-    setTimeout(function(){ window.location.reload(); }, 8000);
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistration().then(function(reg){
         if (reg) reg.update().catch(function(){});
       }).catch(function(){});
     }
+    setTimeout(function(){
+      // controllerchange에서 이미 새로고침됐으면 이 코드는 실행 안 됨
+      if (manual) forceFresh();
+      else window.location.reload();
+    }, 8000);
   }
+  // 확실한 갈아엎기: 캐시+SW 등록을 제거 후 새로고침 (localStorage 설정은 유지됨).
+  // 수동 "업데이트 확인"의 마지막 수단. 쿠키 지우기와 같은 효과.
+  function forceFresh(){
+    var p = Promise.resolve();
+    try {
+      if ('caches' in window) {
+        p = caches.keys().then(function(keys){
+          return Promise.all(keys.map(function(k){ return caches.delete(k); }));
+        });
+      }
+    } catch(e){}
+    p.then(function(){
+      if ('serviceWorker' in navigator) return navigator.serviceWorker.getRegistration();
+    }).then(function(reg){
+      if (reg) return reg.unregister();
+    }).then(function(){
+      window.location.reload();
+    }).catch(function(){
+      window.location.reload();
+    });
+  }
+  var updateBtn = document.getElementById('updateBtn');
+  if (updateBtn) updateBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    setUpdateStatus(null);
+    checkAppVersion(true);
+  });
 
   renderUiText();
   renderView();
