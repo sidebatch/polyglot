@@ -29,3 +29,9 @@ node build.mjs   # docs/index.html 재생성
 
 수정 → 빌드 → 커밋 → 푸시 순서로 작업. Pages는 `main` 브랜치의 `docs/` 폴더를 서빙한다.
 배포본은 압축되어 있어 소스 보기로는 원본 코드를 바로 가져가기 어렵다.
+
+## PWA
+
+`manifest.webmanifest` + `sw.js` + 아이콘 포함. 폰 브라우저에서
+'홈 화면에 추가'로 설치하면 단독 앱처럼 실행되고 오프라인에서도 열린다.
+아이콘은 `src/icons/`에서 PIL로 생성 (빌드 시 `docs/icons/`로 복사).

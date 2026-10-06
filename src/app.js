@@ -26,4 +26,9 @@
       if(open){detail.scrollIntoView({behavior:"smooth",block:"start"});}
     });
   });
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});
+    });
+  }
 })();

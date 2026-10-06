@@ -20,16 +20,23 @@
   .hello-wall{
     position:absolute; inset:0; overflow:hidden; pointer-events:none;
     display:flex; flex-wrap:wrap; align-content:center; justify-content:center;
-    gap:4px 16px; padding:18px 12px; opacity:.17;
-    -webkit-mask-image:radial-gradient(ellipse at center,#000 55%,transparent 100%);
-    mask-image:radial-gradient(ellipse at center,#000 55%,transparent 100%);
+    gap:4px 16px; padding:18px 12px; opacity:.12;
   }
   .hello-wall span{color:#f5eddc; font-family:Georgia,"Noto Serif KR",serif; white-space:nowrap; line-height:1.3;}
   .hello-wall span:nth-child(3n){font-size:14px; transform:rotate(-4deg);}
   .hello-wall span:nth-child(3n+1){font-size:21px; transform:rotate(3deg);}
   .hello-wall span:nth-child(3n+2){font-size:17px; transform:rotate(-2deg);}
   .hello-wall span:nth-child(5n){font-size:25px;}
-  .hero-inner{position:relative; z-index:1;}
+  .hero-inner{position:relative; z-index:1; text-shadow:0 2px 14px rgba(0,0,0,.55);}
+  .featured{
+    position:relative; z-index:1; margin-top:16px;
+    display:flex; flex-wrap:wrap; justify-content:center; gap:8px 10px;
+  }
+  .featured span{
+    color:#f7f0df; font-size:15px; font-weight:600; white-space:nowrap;
+    background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.16);
+    padding:6px 13px; border-radius:999px;
+  }
   .hero h1{margin:0; font-size:26px; letter-spacing:.5px; font-family:Georgia,"Noto Serif KR",serif;}
   .hero h1 .g{color:#e8c476;}
   .hero p{margin:8px 0 0; font-size:13.5px; color:#cbbfa8;}

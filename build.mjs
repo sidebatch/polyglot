@@ -2,7 +2,7 @@
 // 사용법: node build.mjs
 // - src/app.js, src/styles.css를 esbuild로 minify 후 src/index.html에 인라인
 // - HTML 주석 제거 + 공백 압축 → docs/index.html (GitHub Pages 배포 대상)
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, cpSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 
 mkdirSync('docs', { recursive: true });
@@ -30,3 +30,12 @@ html = html.split('\n').map((l) => l.trim()).filter((l) => l.length).join('\n');
 
 writeFileSync('docs/index.html', html);
 console.log('built docs/index.html — ' + html.length + ' bytes');
+
+// 정적 애셋 복사 (PWA)
+cpSync('src/manifest.webmanifest', 'docs/manifest.webmanifest');
+cpSync('src/icons', 'docs/icons', { recursive: true });
+var sw = readFileSync('src/sw.js', 'utf8');
+var ver = 'v1';
+try { ver = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim(); } catch (e) {}
+writeFileSync('docs/sw.js', sw.replace('__VERSION__', ver));
+console.log('copied manifest, icons, sw.js (' + ver + ')');
