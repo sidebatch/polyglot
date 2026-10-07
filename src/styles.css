@@ -160,7 +160,7 @@
   .soon .big{font-size:44px; margin-bottom:12px;}
   .soon h2{font-family:Georgia,"Noto Serif KR",serif; color:var(--ink); margin:0 0 10px; font-size:20px;}
   .soon p{font-size:14.5px;}
-  .entry-list{display:flex; flex-direction:column; gap:12px;}
+  .entry-list{display:flex; flex-direction:column-reverse; gap:12px;}
   .entry-card{
     text-align:left; background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
     padding:18px 44px 18px 18px; cursor:pointer; font-family:inherit; width:100%; color:var(--ink);

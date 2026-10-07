@@ -1,6 +1,6 @@
 // Polyglot service worker — 네트워크 우선, 오프라인 폴백 (Still과 동일 전략)
 // 온라인이면 항상 최신 셸을 가져오므로 일반 새로고침만으로 업데이트가 반영됨.
-var CACHE = 'polyglot-1c74be0';
+var CACHE = 'polyglot-29e5864';
 var ASSETS = ['./', './index.html', './manifest.webmanifest',
   './icons/flags/jp.png', './icons/flags/gb.png', './icons/flags/fr.png', './icons/flags/ru.png',
   './icons/flags/es.png', './icons/flags/de.png', './icons/flags/cn.png', './icons/flags/sa.png'];
