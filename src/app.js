@@ -305,7 +305,7 @@
     if (toastTimer) clearTimeout(toastTimer);
     toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 2000);
   }
-  document.querySelectorAll('.entry-share').forEach(function(btn){
+  document.querySelectorAll('.share-btn').forEach(function(btn){
     btn.addEventListener('click', function(e){
       e.stopPropagation();
       var id = btn.getAttribute('data-share');
