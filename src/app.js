@@ -259,14 +259,65 @@
   topbtn.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
 
   // ---------- 자료 아코디언 ----------
+  function setEntryOpen(card, detail, open){
+    detail.hidden = !open;
+    card.classList.toggle('open', open);
+    card.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
   document.querySelectorAll('.entry-card').forEach(function(card){
     card.addEventListener('click', function(){
       var detail = document.getElementById(card.dataset.entry);
       var open = detail.hidden;
-      detail.hidden = !open;
-      card.classList.toggle('open', open);
-      card.setAttribute('aria-expanded', open?'true':'false');
-      if (open) detail.scrollIntoView({behavior:'smooth', block:'start'});
+      setEntryOpen(card, detail, open);
+      if (open) {
+        try { history.replaceState(null, '', '#' + card.dataset.entry); } catch(e){}
+        detail.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    });
+  });
+
+  // ---------- 딥링크: #entry-... 해시로 해당 카드 바로 열기 ----------
+  function openFromHash(){
+    var id = (window.location.hash || '').slice(1);
+    if (!id) return;
+    var detail = document.getElementById(id);
+    if (!detail || !detail.classList.contains('entry-detail')) return;
+    var card = document.querySelector('.entry-card[data-entry="' + id + '"]');
+    if (!card) return;
+    var pane = detail.closest('.pane');
+    if (pane) {
+      var code = pane.id.replace('pane-', '');
+      if (viewMode === 'grid') openLangGrid(code); else activate(code);
+    }
+    setEntryOpen(card, detail, true);
+    setTimeout(function(){ detail.scrollIntoView({behavior:'smooth', block:'start'}); }, 60);
+  }
+  window.addEventListener('hashchange', openFromHash);
+  // 초기 호출은 파일 끝의 renderView() 뒤에서 (초기화가 연 카드를 닫지 않도록)
+
+  // ---------- 링크 공유 ----------
+  var toastTimer = null;
+  function showToast(msg){
+    var toastEl = document.getElementById('toast');
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 2000);
+  }
+  document.querySelectorAll('.entry-share').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var id = btn.getAttribute('data-share');
+      var url = window.location.origin + window.location.pathname + '#' + id;
+      var card = btn.closest('.entry-card');
+      var titleEl = card ? card.querySelector('.entry-title') : null;
+      var title = titleEl ? titleEl.textContent : 'Polyglot';
+      if (navigator.share) {
+        navigator.share({title:'Polyglot', text:title, url:url}).catch(function(){});
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function(){ showToast(t('link_copied')); }).catch(function(){});
+      }
     });
   });
 
@@ -309,4 +360,5 @@
 
   renderUiText();
   renderView();
+  openFromHash();
 })();
