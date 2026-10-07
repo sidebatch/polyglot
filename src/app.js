@@ -321,6 +321,27 @@
     });
   });
 
+  // ---------- NEW 배지: 지난 방문 때 없던 자료에 표시 ----------
+  (function(){
+    var KEY = 'polyglot-seen';
+    var cards = document.querySelectorAll('.entry-card[data-entry]');
+    var ids = [];
+    cards.forEach(function(c){ ids.push(c.getAttribute('data-entry')); });
+    var seen = null;
+    try { seen = JSON.parse(window.localStorage.getItem(KEY) || 'null'); } catch(e){}
+    if (Array.isArray(seen)) {
+      var seenSet = {};
+      seen.forEach(function(id){ seenSet[id] = true; });
+      cards.forEach(function(c){
+        if (!seenSet[c.getAttribute('data-entry')]) {
+          var b = c.querySelector('.new-badge');
+          if (b) b.hidden = false;
+        }
+      });
+    }
+    try { window.localStorage.setItem(KEY, JSON.stringify(ids)); } catch(e){}
+  })();
+
   // ---------- PWA ----------
   // 네트워크 우선 전략(Still과 동일): 온라인이면 항상 최신 셸을 가져오므로
   // 일반 새로고침만으로 업데이트가 반영됨. 오프라인이면 캐시로 폴백.

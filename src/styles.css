@@ -180,6 +180,12 @@
     font-size:14px; padding:6px; cursor:pointer; opacity:.6; line-height:1;
   }
   .entry-card .entry-share:active{transform:translateY(-50%) scale(.88); opacity:1;}
+  .new-badge{
+    position:absolute; top:10px; right:12px;
+    background:#b3402e; color:#fff; font-size:10.5px; font-weight:800; letter-spacing:.6px;
+    padding:2.5px 7px; border-radius:999px; line-height:1.25;
+    box-shadow:0 2px 6px rgba(179,64,46,.4);
+  }
   #toast{
     position:fixed; left:50%; bottom:28px; z-index:200; pointer-events:none;
     background:#2b2620; color:#f5eddc; font-size:14px; padding:10px 18px; border-radius:999px;
