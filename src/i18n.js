@@ -4,7 +4,7 @@
 var POLYGLOT_LANGS = [
   {code:'ja', flag:'icons/flags/jp.png', accent:'#b3402e', hasContent:true,
    names:{ko:'일본어',ja:'日本語',en:'Japanese',fr:'Japonais',ru:'Японский',es:'Japonés',de:'Japanisch',zh:'日语',ar:'اليابانية'}},
-  {code:'en', flag:'icons/flags/gb.png', accent:'#274b73',
+  {code:'en', flag:'icons/flags/gb.png', accent:'#274b73', hasContent:true,
    names:{ko:'영어',ja:'英語',en:'English',fr:'Anglais',ru:'Английский',es:'Inglés',de:'Englisch',zh:'英语',ar:'الإنجليزية'}},
   {code:'fr', flag:'icons/flags/fr.png', accent:'#3a5fb0',
    names:{ko:'프랑스어',ja:'フランス語',en:'French',fr:'Français',ru:'Французский',es:'Francés',de:'Französisch',zh:'法语',ar:'الفرنسية'}},
