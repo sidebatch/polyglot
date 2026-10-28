@@ -613,10 +613,21 @@
 
 <button id="topbtn" data-i18n-aria="topbtn" aria-label="맨 위로">↑</button>
 
-<footer><span data-i18n="footer_tag">Polyglot · 언어별 레퍼런스</span><br><span class="copy">© 2026 sidebatch. All rights reserved. · v__VER__</span></footer>
+<footer><span data-i18n="footer_tag">Polyglot · 언어별 레퍼런스</span><br><span class="copy">© 2026 sidebatch. All rights reserved. · v__VER__</span> <span id="gcBadge" title="지금까지 이 앱이 열린 횟수"></span></footer>
 
 <script src="i18n.js"></script>
 <script src="app.js"></script>
 <div id="toast" role="status"></div>
+<script data-goatcounter="https://polyglot.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<script>
+fetch('https://polyglot.goatcounter.com/counter/TOTAL.json')
+  .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+  .then(function(d){
+    var b = document.getElementById('gcBadge');
+    if(b && d && d.count){ b.textContent = '👥 ' + d.count; b.style.display = 'inline-block'; }
+  })
+  .catch(function(){});
+</script>
 </body>
 </html>
