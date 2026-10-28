@@ -7,7 +7,7 @@ const html = fs.readFileSync(path.join(__dirname, '..', 'docs', 'index.html'), '
 const results = [];
 const ok = (n, c) => results.push([n, !!c]);
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-const ALL_IDS = ['entry-ja-1', 'entry-ja-2', 'entry-ja-3', 'entry-en-1', 'entry-ru-1', 'entry-ru-2', 'mindset-tree'];
+const ALL_IDS = ['entry-ja-1', 'entry-ja-2', 'entry-ja-3', 'entry-en-1', 'entry-fr-1', 'entry-ru-1', 'entry-ru-2', 'mindset-tree'];
 
 function makeDom(opts = {}) {
   return new JSDOM(html, {
@@ -72,10 +72,10 @@ function makeDom(opts = {}) {
   {
     const dom = makeDom(); await wait(120);
     const d = dom.window.document;
-    ok('chips on all 7 cards', d.querySelectorAll('.entry-card .chip svg').length === 7);
+    ok('chips on all 8 cards', d.querySelectorAll('.entry-card .chip svg').length === 8);
     ok('no legacy chev/share on card face', d.querySelectorAll('.chev, .entry-share').length === 0);
-    ok('share buttons (7) inside details',
-       d.querySelectorAll('.share-btn').length === 7 &&
+    ok('share buttons (8) inside details',
+       d.querySelectorAll('.share-btn').length === 8 &&
        [...d.querySelectorAll('.share-btn')].every(b => b.closest('.entry-detail')));
     dom.window.close();
   }
